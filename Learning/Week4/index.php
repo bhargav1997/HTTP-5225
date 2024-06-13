@@ -34,7 +34,6 @@
       }
 
     //   echo 'Number Of Rows: '. mysqli_num_rows($result);    
-
     foreach($result as $row) {
         // echo $row['Name'] . ' - ' . $row['Hex'] . '<br>';
         echo '<div class="col-md-4 p-3">
