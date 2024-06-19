@@ -6,7 +6,8 @@
     $phone = $_POST['phone'];
     $email = $_POST['email'];
  
-    $sql = "UPDATE schools SET `School Name` = '$schoolName', `School Level` = '$schoolType', `Phone` = '$phone', `Email` = '$email' WHERE id = '$id'";
+    $sql = "UPDATE schools SET `School Name` = '". mysqli_real_escape_string($connect, $schoolName)."', 
+    `School Level` = '". mysqli_real_escape_string($connect, $schoolType)."', `Phone` = '". mysqli_real_escape_string($connect, $phone) ."', `Email` = '". mysqli_real_escape_string($connect, $email)."' WHERE id = '$id'";
     
     $result = mysqli_query($connect, $sql);
     if($result) {
