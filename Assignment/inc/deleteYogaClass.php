@@ -1,6 +1,6 @@
 <?php
     include('../reusable/con.php');
-    include('functions.php');
+    include('./functions.php');
 
     if(isset($_GET['id'])) {
         print_r($_GET);
@@ -8,14 +8,15 @@
 
         $id = intval($id); // convert string to int
 
-        $query = "DELETE FROM schools WHERE `id` = '$id'";
+
+        $query = "DELETE FROM classess WHERE `id` = '$id'";
         $result = mysqli_query($connect, $query);
 
         if (!$result) {
             set_messages('Query Failed' . 'error');
             die('Query Failed' . mysqli_error($connect));
         }
-        set_messages('School Deleted Successfully', 'success');
+
         header('Location: ../index.php');
         mysqli_close($connect);
     } else {

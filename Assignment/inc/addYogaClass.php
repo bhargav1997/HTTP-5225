@@ -1,19 +1,20 @@
 <?php 
-    include('functions.php');
-
-    if(isset($_POST['addSchool'])) {         
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         print_r($_POST);
 
-        $schoolName = $_POST['schoolName'];
-        $schoolType = $_POST['schoolType'];
+        $className = $_POST['className'];
+        $classType = $_POST['classType'];
         $phone = $_POST['phone'];
         $email = $_POST['email'];
 
+        // Include database connection
         include('../reusable/con.php');
+        include('./functions.php');
 
-        $query = "INSERT INTO schools (`School Name`, `School Level`, `Phone`, `Email`) VALUES 
-        ('".mysqli_real_escape_string($connect, $schoolName)."', 
-        '".mysqli_real_escape_string($connect, $schoolType)."', 
+        // Prepare SQL statement to prevent SQL injection
+        $query = "INSERT INTO classess (`Class Name`, `Class Level`, `Phone`, `Email`) VALUES 
+        ('".mysqli_real_escape_string($connect, $className)."', 
+        '".mysqli_real_escape_string($connect, $classType)."', 
         '".mysqli_real_escape_string($connect, $phone)."', '
         ".mysqli_real_escape_string($connect, $email)."')";
 
@@ -31,6 +32,6 @@
         mysqli_close($connect);
     } else {
         header('Location: ../index.php');
+        exit();
     }
 ?>
-

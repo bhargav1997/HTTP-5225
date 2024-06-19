@@ -20,7 +20,8 @@
   </div>
   
   <?php 
-      include('./reusable/con.php');
+      include('./reusable/con.php'); 
+      include('inc/functions.php');
       $query = 'SELECT * FROM schools ORDER BY `School Name`';  
       $schools = mysqli_query($connect, $query);
       // echo '<pre>';
@@ -30,6 +31,11 @@
 
   <div class="container-fluid">
     <div class="container">
+      <div class="row">
+        <div class="col">
+          <?php get_messages(); ?>
+          </div>
+      </div>
       <div class="row">
         <?php
           foreach($schools as $school){
