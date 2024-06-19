@@ -20,7 +20,7 @@
         $result = mysqli_query($connect, $query);
 
         if (!$result) {
-            set_messages('Query Failed' . 'error');
+            set_messages('Error, School Not Added' , 'error');
             die("Query Failed: " . mysqli_error($connect));
         }
 

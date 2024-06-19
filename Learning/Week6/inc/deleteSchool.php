@@ -12,7 +12,7 @@
         $result = mysqli_query($connect, $query);
 
         if (!$result) {
-            set_messages('Query Failed' . 'error');
+            set_messages('Something went wrong' , 'error');
             die('Query Failed' . mysqli_error($connect));
         }
         set_messages('School Deleted Successfully', 'success');
