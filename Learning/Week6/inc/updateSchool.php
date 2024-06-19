@@ -17,8 +17,14 @@
       </div>
     </div>
   </div>
+  <?php include('inc/functions.php'); ?>
   <div class="container-fluid">
     <div class="container">
+    <div class="row">
+        <div class="col">
+          <?php get_messages(); ?>
+          </div>
+      </div>
       <div class="row">
         <div class="col-md-6">
           <form action="./update.php" method="POST">
