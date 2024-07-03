@@ -1,71 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yoga Studio</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-</head>
-<body>
-  <?php include 'reusable/nav.php'; ?>
+<?php include 'reusable/nav.php'; ?>
 
-  <div class="container-fluid bg-light py-5">
+<div class="container-fluid bg-light py-5">
     <div class="container text-center">
-      <div class="row">
-        <div class="col">
-          <h1 class="display-3 text-dark">Yoga Classes</h1>
+        <div class="row">
+            <div class="col">
+                <h1 class="display-3 text-dark">Yoga Classes</h1>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  
-  <?php 
-      include('./reusable/con.php');
-      $query = 'SELECT * FROM classess ORDER BY `Class Name`';  
-      $classess = mysqli_query($connect, $query);
-  ?>
+</div>
 
-  <div class="container-fluid">
-    <div class="container">
-      <div class="row">
+
+<?php 
+include('./reusable/con.php');
+include('inc/functions.php');
+
+// Query to retrieve all classes ordered by name (assuming 'name' is the correct column name)
+$query = 'SELECT * FROM classes ORDER BY `name`';  
+$classess = mysqli_query($connect, $query);
+
+// Check for query errors
+if (!$classess) {
+    die('Query failed: ' . mysqli_error($connect));
+}
+
+?>
+
+<div class="container mt-5">
+    <div class="row">
         <?php
-          foreach($classess as $class){
-            echo '<div class="col-md-4 mt-2 mb-2">
-                    <div class="card ' . $class['id'] . '">
-                      <div class="card-body">
-                        <h5 class="card-title">' . $class['Class Name'] . '</h5>
-                        <p class="card-text">' . $class['Class Level'] . '</p>
-                        <span class="badge bg-secondary">' . $class['Phone'] . '</span>
-                        <span class="badge bg-info">' . $class['Email'] . '</span>
-                      </div>
-                      <div class="card-footer">
-                        <div class="row">
-                          <div class="col">
-                            <form action="./inc/updateYogaClass.php" method="post">
-                              <input type="hidden" name="id" value="' . $class['id'] . '">
-                              <input type="hidden" name="className" value="' . $class['Class Name'] . '">
-                              <input type="hidden" name="classType" value="' . $class['Class Level'] . '">
-                              <input type="hidden" name="phone" value="' . $class['Phone'] . '">
-                              <input type="hidden" name="email" value="' . $class['Email'] . '">
-                              <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                            </form>
-                          </div>
-                          <div class="col">
-                            <form action="./inc/deleteYogaClass.php" method="get" name="deleteClassForm">
-                              <input type="hidden" name="id" value="' . $class['id'] . '">
-                              <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            </form>
-                          </div>
+        // Check if there are classes to display
+        if (mysqli_num_rows($classess) > 0) {
+            // Loop through each class
+            while ($class = mysqli_fetch_assoc($classess)) {
+                // Fetch instructor details for each class
+                $instructor_id = $class['instructor_id'];
+                $instructor_query = "SELECT * FROM instructors WHERE id = $instructor_id";
+                $instructor_result = mysqli_query($connect, $instructor_query);
+                if (!$instructor_result) {
+                    die('Instructor query failed: ' . mysqli_error($connect));
+                }
+                $instructor = mysqli_fetch_assoc($instructor_result);
+                ?>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title"><?php echo $class['name']; ?></h5>
+                            <p class="card-text"><?php echo $class['level']; ?></p>
+                            <p class="card-text"><strong>Instructor:</strong> <?php echo htmlspecialchars($instructor['name']); ?></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <form action="./updateYogaClass.php" method="post">
+                                        <input type="hidden" name="id" value="<?php echo $class['id']; ?>">
+                                        <input type="hidden" name="className" value="<?php echo $class['name']; ?>">
+                                        <input type="hidden" name="classType" value="<?php echo $class['level']; ?>">
+                                        <input type="hidden" name="instructorId" value="<?php echo $instructor['id']; ?>">
+                                        <button type="submit" class="btn btn-sm btn-outline-primary">Update</button>
+                                    </form>
+                                    <form action="./inc/deleteYogaClass.php" class="mx-2" method="get" name="deleteClassForm" onsubmit="return confirm(`Are you sure, you want to delete?`);">
+                                        <input type="hidden" name="id" value="<?php echo $class['id']; ?>">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger ml-2">Delete</button>
+                                    </form>
+                                </div>
+                                <small class="text-muted"><?php echo $instructor['phone']; ?></small>
+                            </div>
                         </div>
-                      </div>
                     </div>
-                  </div>';  
-          }
+                </div>
+            <?php
+            }
+        } else {
+            echo '<div class="col"><p>No classes found.</p></div>';
+        }
         ?>
-      </div>
     </div>
-  </div>
+</div>
 
-
-</body>
-</html>
+<?php include './reusable/footer.php'; ?>

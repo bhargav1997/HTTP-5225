@@ -1,3 +1,8 @@
+<?php
+  include('./inc/functions.php');
+  secure();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +26,6 @@
   
   <?php 
       include('./reusable/con.php'); 
-      include('inc/functions.php');
       $query = 'SELECT * FROM schools ORDER BY `School Name`';  
       $schools = mysqli_query($connect, $query);
       // echo '<pre>';
