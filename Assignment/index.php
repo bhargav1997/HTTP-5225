@@ -15,7 +15,7 @@
 include('./reusable/con.php');
 include('inc/functions.php');
 
-// Query to retrieve all classes ordered by name (assuming 'name' is the correct column name)
+// Query to retrieve all classes ordered by name 
 $query = 'SELECT * FROM classes ORDER BY `name`';  
 $classess = mysqli_query($connect, $query);
 
