@@ -11,11 +11,10 @@ Route::get('/admin', function () {
     return view('admin');
 });
 
-// Route::get('students/trash/{id}', [StudentController::class, 'trash'])->name('students.trash');
+Route::get('students/trash/{id}', [StudentController::class, 'trash'])->name('students.trash');
 
-// Route::get('students/trashed/', [StudentController::class, 'trashed'])->name('students.trashed');
+Route::get('students/trashed/', [StudentController::class, 'trashed'])->name('students.trashed');
     
-// Route::get('students/restore/{id}', [StudentController::class, 'trash'])->name('students.restore');
+Route::get('students/restore/{id}', [StudentController::class, 'trash'])->name('students.restore');
 
 Route::resource('students', StudentController::class);
-

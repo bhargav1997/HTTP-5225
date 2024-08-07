@@ -1,19 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LMS</title>
-</head>
-<body>
-    <h1> All Students</h1>
+@extends('layouts/admin')
+@section('content')
+    <h1> View All Students</h1>
 
-    @foreach ( $students as $student )
+   
+    <div class="row">
+        @foreach ($students as $student)
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            {{ $student -> fname}} {{ $student -> lname }}
+                        </h5>
+                        <a href="{{ route('students.edit', $student->id)}}" class=" btn btn-primary">Edit</a>
+                        <a href="{{ route('students.trash', $student->id)}}" class="btn btn-danger">Delete</a>
+                    </div>
 
-    <p>{{ $student->fname }}</p>
-    <p>{{ $student->lname }}</p>
-    <p>{{ $student->email }}</p>
-    
-    @endforeach
-</body>
-</html>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+
+    <!-- <table class="table table-striped">
+        <tr class="table-primary">
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+        </tr>
+        @foreach ( $students as $student )
+            <tr class="table-secondary">
+                <td>{{ $student->fname }}</td>
+                <td>{{ $student->lname }}</td>
+                <td>{{ $student->email }}</td>
+        @endforeach
+    </table> -->
+
+
+@endsection
+
+

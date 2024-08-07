@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Models\Student;
+use Illuminate\Support\Facades\Session;
 
 class StudentController extends Controller
 {
@@ -13,7 +14,9 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return view("students.index", ['students' => Student::all()]);
+        return view('students.index', [
+            'students' => Student::all()
+        ]);
     }
 
     /**
@@ -29,7 +32,9 @@ class StudentController extends Controller
      */
     public function store(StoreStudentRequest $request)
     {
-        //
+        Student::create($request->validated());
+        Session::flash('success', 'Student created successfully!');
+        return redirect() -> route('students.index');
     }
 
     /**
@@ -45,7 +50,8 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        //
+        // return view('students.edit', ['student' => $student]);
+        return view('students.edit', compact('student'));
     }
 
     /**
@@ -53,7 +59,9 @@ class StudentController extends Controller
      */
     public function update(UpdateStudentRequest $request, Student $student)
     {
-        //
+        $student->update($request->validated());
+        Session::flash('success', 'Student updated successfully!');
+        return redirect()->route('students.index');
     }
 
     /**
@@ -62,5 +70,11 @@ class StudentController extends Controller
     public function destroy(Student $student)
     {
         //
+    }
+
+    public function trash($id){
+        Student::destroy($id);
+        Session::flash('success','Student deleted successfully!');
+        return redirect()->route('students.index');
     }
 }
