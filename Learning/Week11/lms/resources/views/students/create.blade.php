@@ -38,6 +38,14 @@
                 </span>
             @enderror
           </div>
+          <div class="mb-3">
+            <label for="courses" class="form-label">Courses</label>
+            <select class="form-select" name="courses" id="courses" aria-label="multiple course select">
+                @foreach ($courses as $course)
+                    <option value="{{ $course->id }}">{{ $course->name }}</option>
+                @endforeach
+            </select>
+          </div>
         <button type="submit" class="btn btn-primary">Add Student</button>
       </form>
 </div>

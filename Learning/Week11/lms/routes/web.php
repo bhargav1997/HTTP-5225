@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,3 +19,4 @@ Route::get('students/trashed/', [StudentController::class, 'trashed'])->name('st
 Route::get('students/restore/{id}', [StudentController::class, 'trash'])->name('students.restore');
 
 Route::resource('students', StudentController::class);
+Route::resource('courses', CourseController::class);

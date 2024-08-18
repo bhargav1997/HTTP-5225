@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use App\Models\Course;
 use App\Models\Student;
 use Illuminate\Support\Facades\Session;
 
@@ -19,12 +20,21 @@ class StudentController extends Controller
         ]);
     }
 
+    public function trashed()
+    {
+        return view('students.trashed', [
+            'students' => Student::onlyTrashed() -> get()
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view('students.create');
+        return view('students.create', [
+            'courses' => Course::all()
+        ]);
     }
 
     /**
@@ -32,7 +42,9 @@ class StudentController extends Controller
      */
     public function store(StoreStudentRequest $request)
     {
-        Student::create($request->validated());
+        $student = Student::create($request->validated());
+        $student -> courses() -> attach($request->courses);
+
         Session::flash('success', 'Student created successfully!');
         return redirect() -> route('students.index');
     }
@@ -67,9 +79,19 @@ class StudentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Student $student)
+    public function destroy($id)
     {
-        //
+        $student = Student::withTrashed()-> where('id', $id) -> first();
+        $student -> forceDelete();
+        Session::flash('success', 'Student deleted successfully!');
+        return redirect()->route('students.trashed');
+    }
+
+    public function restore($id){
+        $student = Student::withTrashed()-> where('id', $id) -> first();
+        $student -> restore();
+        Session::flash('success','Student restored successfully!');
+        return redirect()->route('students.index');
     }
 
     public function trash($id){
